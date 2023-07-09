@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 
+
 public class ProdutosDAO {
     
     Connection conn;
@@ -42,12 +43,32 @@ public class ProdutosDAO {
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
-        
+        conn = new conectaDAO().connectDB();
+        String sql = "SELECT id, nome, valor, status FROM produtos";
+
+        try {
+            prep = conn.prepareStatement(sql);
+            resultset = prep.executeQuery();
+
+           listagem = new ArrayList<>();
+
+            while (resultset.next()) {
+                ProdutosDTO prod = new ProdutosDTO();
+
+                prod.setId(resultset.getInt("id"));
+                prod.setNome(resultset.getString("nome"));
+                prod.setValor(resultset.getInt("valor"));
+                prod.setStatus(resultset.getString("status"));
+          
+                listagem.add(prod);
+            }
         return listagem;
     }
+    catch (Exception e) {
+            return null;
+        }
     
     
-    
-        
+    }   
 }
 
